@@ -13,6 +13,10 @@ sleep 5
 echo "done"
 
 echo "Starting tailscale"
-/app/tailscale up --authkey=${TAILSCALE_AUTHKEY} --hostname=fli-hole &
-
-fg 1
+until /app/tailscale up \
+    --authkey="${TAILSCALE_AUTH_KEY}" \
+    --hostname="fli-hole${FLY_REGION}" \
+    --advertise-exit-node
+do
+    sleep 0.1
+done
