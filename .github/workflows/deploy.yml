@@ -8,6 +8,9 @@ jobs:
       # This step checks out a copy of your repository.
       - uses: actions/checkout@v2
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl launch --remote-only --now --copy-config --name fli-hole-tailscale-test --region nrt
+      - run: flyctl secrets set TAILSCALE_AUTH_KEY=${{ secrets.TAILSCALE_AUTH_KEY }} || true
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - run: flyctl deploy --remote-only --now -a fli-hole-tailscale-test --region nrt
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
